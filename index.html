@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Books Library </title>
+</head>
+
+<body>
+    <div class="header"> &nbsp;</div>
+    <div class="container">
+        <table id="table">
+            <caption> Books Library</caption>
+            <thead>
+                <tr>
+                    <th scope="col"> Ids</th>
+                    <th scope="col"> Book Title </th>
+                    <th scope="col"> Authors </th>
+                    <th scope="col"> Number of Pages</th>
+                    <th scope="col"> Year of Publication</th>
+                    <th scope="col"> Read Status </th>
+                    <th scope="col"></th>
+
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+
+            </tbody>
+        </table>
+        <button class="newbook" onclick="displayForm()"> Click Here to Add a new Book</button>
+        <div class="form" id="theForm">
+            <form action="#">
+                <label for=""> Title </label><input type="text" id="title" required>
+                <label for=""> Author</label><input type="text" id="author" required>
+                <label for=""> Number of Pages </label><input type="number" id="pages" required>
+                <label for=""> Year of Publication </label><input type="number" pattern="[1-9][0-9]{3}" id="year" required>
+                <label for=""> have you read it?</label><input type="text" id="status" required>
+                <div class="submitButtons">
+                    <button type="submit" onclick="updateDisplayAndAddDeleteEvents()">Add it </button>
+                    <button class="cancel" onclick="closeForm()"> Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="footer"> Copyright&copy;2022 Essohanam ALOU</div>
+    <script src="app.js"></script>
+</body>
+
+</html>
