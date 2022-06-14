@@ -33,14 +33,18 @@
         <button class="newbook" onclick="displayForm()"> Click Here to Add a new Book</button>
         <div class="form" id="theForm">
             <form action="#">
-                <label for=""> Title </label><input type="text" id="title" required>
-                <label for=""> Author</label><input type="text" id="author" required>
-                <label for=""> Number of Pages </label><input type="number" id="pages" required>
-                <label for=""> Year of Publication </label><input type="number" pattern="[1-9][0-9]{3}" id="year" required>
-                <label for=""> have you read it?</label><input type="text" id="status" required>
+                <label for=""> Title </label><input type="text" id="title" class="input" required>
+                <label for=""> Author</label><input type="text" id="author" required class="input">
+                <label for=""> Number of Pages </label><input type="number" id="pages" required class="input">
+                <label for=""> Year of Publication </label><input type="number" pattern="[1-9][0-9]{3}" id="year" class="input" required>
+                <!--<label for=""> have you read it?</label><input type="text" id="status" required>  -->
+                <div id="status">
+                    <div><label for="yes">Yes</label> <input type="radio" name="read-status" value="Read"></div>
+                    <div><label for="no">No</label> <input type="radio" name="read-status" value="Not Read Yet"></div>
+                </div>
                 <div class="submitButtons">
-                    <button type="submit" onclick="updateDisplayAndAddDeleteEvents()">Add it </button>
-                    <button class="cancel" onclick="closeForm()"> Cancel</button>
+                    <button type="submit" onclick="updateDisplay()">Add it </button>
+                    <button type="button" class="cancel" onclick="closeForm()"> Cancel</button>
                 </div>
             </form>
         </div>

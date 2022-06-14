@@ -6,21 +6,31 @@ const bookStatus = document.getElementById('status');
 const booksTable = document.getElementById('table');
 const tableBody = document.getElementById('tableBody');
 const form = document.getElementById('theForm');
+let radioNodeList = document.querySelectorAll('input[name="read-status"]');
+
+let checkedstatus = false;
 let invalidStatus = false;
+
 // Book Constructor
-function Book(title, author, pages, year, read) {
+function Book(title, author, pages, year, status) {
     this.title = title;
     this.author = author;
-    this.read = read;
+    this.status = status;
     this.pages = pages;
     this.year = year;
-    this.info = function() { return `${title} by ${author},${pages} pages, ${read}` };
+    //this.info = function() { return `${title} by ${author},${pages} pages, ${read}` };
 }
-//const brian = new book("compound effect", "Brian Tracy", 200, "already read");
-//brian.info();
-let exempleBook = new Book("Java script the Good Part", "Douglas Crokford", 172, 2008, "already Read");
+// let add a function to toggle read status in Book prototype instance 
+Book.prototype.toggleStatus = function() {
+    if (this.status === 'Read') {
+        this.status = 'Not Read Yet';
+    } else {
+        this.status = 'Read';
+    }
+};
+let exempleBook = new Book("Java script the Good Part", "Douglas Crokford", 172, 2008, "Read");
 const myLibrary = [];
-const inputsNameArray = [bookTitle, bookAuthor, bookPages, bookYear, bookStatus];
+const inputsNameArray = [bookTitle, bookAuthor, bookPages, bookYear];
 
 function chekInvalidStatus() {
     inputsNameArray.forEach((inputElement) => {
@@ -56,7 +66,21 @@ function addBookToLibrary() {
         let author = bookAuthor.value;
         let pages = bookPages.value;
         let year = bookYear.value;
-        let status = bookStatus.value;
+        let status;
+
+        radioNodeList.forEach((radioButton) => {
+            if (radioButton.checked) {
+                checkedstatus = true
+            }
+        });
+        if (checkedstatus) {
+            let radioValue = document.querySelector('input[name="read-status"]:checked').value;
+            status = `${radioValue}`;
+            checkedstatus = false;
+        } else {
+            status = 'Read';
+        }
+
         let newBook = new Book(title, author, pages, year, status);
 
         myLibrary.push(newBook);
@@ -80,18 +104,10 @@ function clearInputs() {
 function updateDisplay() {
     addBookToLibrary();
     clearTableBody();
-    displayBooksOnPage(); {
-
-    }
-    //  addDeleteEventsOnButtons();
+    displayBooksOnPage();
     clearInputs();
 }
-
-function updateDisplayAndAddDeleteEvents() {
-    updateDisplay();
-    addDeleteEventsOnButtons();
-}
-
+//
 function clearTableBody() {
     tableBody.innerHTML = '';
 }
@@ -122,7 +138,14 @@ function displayBooksOnPage() {
         bookRow.appendChild(bookYear);
 
         let readStatus = document.createElement('td');
-        readStatus.innerHTML = 'Default';
+        let toggleDiv = document.createElement('span');
+        toggleDiv.setAttribute('title', ' Click to change status');
+        toggleDiv.className = 'toggleDivContainer';
+        let statusContainer = document.createElement('span');
+        statusContainer.innerHTML = book['status'];
+        readStatus.appendChild(statusContainer);
+        readStatus.appendChild(toggleDiv);
+        // readStatus.innerHTML = book['status'];
         bookRow.appendChild(readStatus);
 
         let buttonToDeleteContainer = document.createElement('td');
@@ -138,21 +161,12 @@ function displayBooksOnPage() {
         tableBody.appendChild(bookRow);
 
     })
-
-
+    addDeleteEventsOnButtons();
+    addToggleStatusEvent();
+    clickToDeleteEvent();
+    clickToToggleStatus();
 }
-// a function to delete a book fom the library
-
-function deleteBook(library, indexOfTheBook) {
-    library.splice(indexOfTheBook, 1);
-    return library;
-}
-
-function deleteBookAndDisplayLibrary(library, indexOfTheBook) {
-    deleteBook(library, indexOfTheBook);
-    displayBooksOnPage();
-}
-
+// 
 function displayForm() {
     chekInvalidStatus();
     form.style.display = 'block';
@@ -164,7 +178,7 @@ function closeForm() {
 
 //  this to dispay books on load
 updateLibrary();
-// lets add some event listeners  to delete buttons
+
 function addDeleteEventsOnButtons() {
 
     let buttonToDeleteNodeList = document.querySelectorAll('.delete');
@@ -172,10 +186,44 @@ function addDeleteEventsOnButtons() {
     buttonToDeleteNodeList.forEach((buttonNode, nodeIndex) => {
         buttonNode.addEventListener('click', () => {
             myLibrary.splice(nodeIndex, 1);
-            clearTableBody();
-            displayBooksOnPage();
-            // alert('done');
+
         });
     })
 }
-addDeleteEventsOnButtons();
+
+// let create a function to reset delete event on buttons 
+function clickToDeleteEvent() {
+    let buttonToDeleteNodeList = document.querySelectorAll('.delete');
+    buttonToDeleteNodeList.forEach((buttonNode) => {
+        buttonNode.addEventListener('click', () => {
+
+            clearTableBody();
+            displayBooksOnPage();
+
+        });
+    })
+
+}
+// a function to toggle status on click
+
+function addToggleStatusEvent() {
+    let buttonToToggleNodeList = document.querySelectorAll('.toggleDivContainer');
+    buttonToToggleNodeList.forEach((toggleButton, buttonIndex) => {
+        toggleButton.addEventListener('click', () => {
+            myLibrary[buttonIndex].toggleStatus();
+            // alert('hello')
+        })
+    })
+}
+
+function clickToToggleStatus() {
+    let buttonToToggleNodeList = document.querySelectorAll('.toggleDivContainer');
+    buttonToToggleNodeList.forEach((toggleButton) => {
+        toggleButton.addEventListener('click', () => {
+            clearTableBody();
+            displayBooksOnPage();
+        })
+    })
+}
+clickToToggleStatus();
+clickToDeleteEvent();
