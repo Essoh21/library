@@ -169,3 +169,8 @@ button[type='submit'] {
 span {
     font-size: .7rem;
 }
+
+.copyright {
+    text-decoration: none;
+    color: var(--back-ground-color);
+}
